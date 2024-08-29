@@ -16,6 +16,7 @@ import PressebleIcon from '../../components/PressebleIcon';
 import SpecialButton from '../../components/SpecialButton';
 import {values} from '../../utils/screenValue';
 import LightButton from '../../components/LightButton';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 const ProfileScreen = ({uid, route}) => {
   const {userInfo} = useContext(DataContext);
@@ -154,7 +155,11 @@ const ProfileScreen = ({uid, route}) => {
       console.log(error);
     }
   };
-
+  const triggerCrash = () => {
+    crashlytics().log('Testing Crashlytics adsadsadasda');
+    crashlytics().crash(); // Bu yöntem, test çökmesi oluşturur
+    console.log('Çökme gerçekleşti');
+  };
   // console.log(pUserInfo);
   // console.log('s', searchUid);
   // console.log('b', bottomUid);
@@ -249,6 +254,10 @@ const ProfileScreen = ({uid, route}) => {
           <Text>2</Text>
         </View>
       )}
+
+      <View style={styles.crashButtonContainer}>
+        <SpecialButton onPress={triggerCrash} label="Crash Test" />
+      </View>
     </View>
   );
 };
@@ -256,6 +265,11 @@ const ProfileScreen = ({uid, route}) => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
+  crashButtonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
   mainContainer: {
     flex: 1,
   },
